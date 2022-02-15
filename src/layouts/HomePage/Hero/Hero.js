@@ -7,6 +7,7 @@ import styled from "styled-components";
 import i1 from "assets/images/zipzip.png";
 import icon from "assets/images/logo.png";
 import Stats from "layouts/Stats/Stats";
+import useMediaQuery from "hooks/useMediaQuery";
 
 export const StyledButton = styled.button`
   padding: 18px;
@@ -28,6 +29,12 @@ export const StyledButton = styled.button`
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
   }
+
+  @media (max-width: 500px) {
+    font-size: 20px;
+    height: auto;
+    padding: 16px 10px;
+  }
 `;
 
 export const StyledImg = styled.img`
@@ -38,6 +45,11 @@ export const StyledImg = styled.img`
 export const LogoImg = styled.img`
   width: 500px;
   height: 500px;
+
+  @media (max-width: 450px) {
+    width: 100%;
+    height: auto;
+  }
 `;
 
 function Hero() {
@@ -46,6 +58,7 @@ function Hero() {
   const data = useSelector((state) => state.data);
   const [feedback, setFeedback] = useState("Maybe it's your lucky day.");
   const [claimingNft, setClaimingNft] = useState(false);
+  const isBellow500px = useMediaQuery("(max-width : 500px)");
 
   const claimNFTs = (_amount) => {
     if (_amount <= 0) {
@@ -85,9 +98,16 @@ function Hero() {
   }, [blockchain.smartContract, dispatch]);
 
   return (
-    <s.Screen style={{ backgroundColor: "var(--white)" }}>
+    <s.Screen
+      style={{ backgroundColor: "var(--white)" }}
+      minHeight={isBellow500px ? "fit-content" : "100vh"}
+    >
       {blockchain.account === "" || blockchain.smartContract === null ? (
-        <s.Container flex={1} ai={"center"} jc={"center"}>
+        <s.Container
+          flex={isBellow500px ? 0 : 1}
+          ai={"center"}
+          jc={isBellow500px ? "unset" : "center"}
+        >
           <LogoImg alt={"logo"} src={icon} />
           <s.SpacerSmall />
           <s.TextTitle style={{ textAlign: "center" }}>
@@ -180,43 +200,50 @@ function Hero() {
                   {feedback}
                 </s.TextDescription>
                 <s.SpacerMedium />
-                <s.Container ai={"center"} jc={"center"} fd={"row"}>
-                  <s.SpacerSmall />
-                  <StyledButton
-                    disabled={claimingNft ? 1 : 0}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      claimNFTs(1);
-                    }}
-                  >
-                    {claimingNft ? "BUSY" : "MINT 1"}
-                  </StyledButton>
-                  <s.SpacerSmall />
+                <s.Wrapper>
+                  <s.Container ai={"center"} jc={"center"} fd={"row"}>
+                    <StyledButton
+                      disabled={claimingNft ? 1 : 0}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        claimNFTs(1);
+                      }}
+                    >
+                      {claimingNft ? "BUSY" : "MINT 1"}
+                    </StyledButton>
+                    <s.SpacerSmall />
 
-                  <StyledButton
-                    disabled={claimingNft ? 1 : 0}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      claimNFTs(2);
-                    }}
-                  >
-                    {claimingNft ? "BUSY CLAIMING" : "MINT 2"}
-                  </StyledButton>
+                    <StyledButton
+                      disabled={claimingNft ? 1 : 0}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        claimNFTs(2);
+                      }}
+                    >
+                      {claimingNft ? "BUSY CLAIMING" : "MINT 2"}
+                    </StyledButton>
 
-                  <s.SpacerSmall />
+                    <s.SpacerSmall />
 
-                  <StyledButton
-                    disabled={claimingNft ? 1 : 0}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      claimNFTs(3);
-                    }}
-                  >
-                    {claimingNft ? "BUSY CLAIMING" : "MINT 3"}
-                  </StyledButton>
-                </s.Container>
-                <s.SpacerLarge />
-                <s.SpacerLarge />
+                    <StyledButton
+                      disabled={claimingNft ? 1 : 0}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        claimNFTs(3);
+                      }}
+                    >
+                      {claimingNft ? "BUSY CLAIMING" : "MINT 3"}
+                    </StyledButton>
+                  </s.Container>
+                </s.Wrapper>
+                {isBellow500px ? (
+                  <s.SpacerLarge />
+                ) : (
+                  <>
+                    <s.SpacerLarge />
+                    <s.SpacerLarge />
+                  </>
+                )}
                 <s.Container
                   jc={"center"}
                   ai={"center"}
