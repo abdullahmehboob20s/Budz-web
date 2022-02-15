@@ -11,12 +11,14 @@ import OutsideClickDetector from "hooks/OutsideClickDetector";
 
 const NavbarWrapper = styled.div`
   background-color: #14396d;
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  padding: 1rem 0;
+  height: 80px;
   z-index: 100;
+  display: flex;
+  align-items: center;
 `;
 
 const NavbarBrand = styled.img`
